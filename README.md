@@ -82,7 +82,40 @@
    DB_USERNAME=sail
    DB_PASSWORD=password
 
- 4.フロントエンドをセットアップする
+ 4.sailを起動し、エイリアスを設定する
+  //sailをバックグラウンドで起動する
+  ./vendor/bin/sail up -d
+
+  //以降 'sail コマンド'　で実行できるようにエイリアスを設定する
+  echo "alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'" >> ~/.bashrc
+
+  //再起動する
+  exec $SHELL
+
+ 5.phpMyAdminを追加する
+   compose.yamlファイルを開き、servicesの中にあるmysqlサービスの後に追加する
+   ※必ず、縦のラインを揃えるようにする。phpmyadminはmysqlと同じ列に記載すること。
+
+   mysql:
+   ・・・
+   phpmyadmin:
+    image: 'phpmyadmin:latest'
+    ports:
+        - '${FORWARD_PHPMYADMIN_PORT:-8080}:80'
+    environment:
+        PMA_HOST: mysql
+        PMA_USER: '${DB_USERNAME}'
+        PMA_PASSWORD: '${DB_PASSWORD}'
+    networks:
+        - sail
+    depends_on:
+        - 
+
+ 6.アプリケーションキーを生成する
+ .envファイルのAPP_KEYに暗号化キーを設定する
+  sail artisan key:generate
+
+ 7.フロントエンドをセットアップする
    本プロジェクトでは、フロントエンドのスタイリングにTailwind CSSを使用する。
    //NPM依存パッケージのインストール
    ※sail npm installを実行する前に必ずsailコンテナが起動していることを確認する(sail upで起動できる)
@@ -123,38 +156,6 @@ export default {
    //Viteサーバーを起動する
    sail npm run dev
 
- 5.phpMyAdminを追加する
-   compose.yamlファイルを開き、servicesの中にあるmysqlサービスの後に追加する
-   ※必ず、縦のラインを揃えるようにする。phpmyadminはmysqlと同じ列に記載すること。
-
-   mysql:
-   ・・・
-   phpmyadmin:
-    image: 'phpmyadmin:latest'
-    ports:
-        - '${FORWARD_PHPMYADMIN_PORT:-8080}:80'
-    environment:
-        PMA_HOST: mysql
-        PMA_USER: '${DB_USERNAME}'
-        PMA_PASSWORD: '${DB_PASSWORD}'
-    networks:
-        - sail
-    depends_on:
-        - 
-
- 6.sailを起動し、エイリアスを設定する
-  //sailをバックグラウンドで起動する
-  ./vendor/bin/sail up -d
-
-  //以降 'sail コマンド'　で実行できるようにエイリアスを設定する
-  echo "alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'" >> ~/.bashrc
-
-  //再起動する
-  exec $SHELL
-
- 7.アプリケーションキーを生成する
- .envファイルのAPP_KEYに暗号化キーを設定する
-  sail artisan key:generate
 
  8.DBのマイグレーションと初期データを投入する
   //テーブルを作成し、初期データを投入する
@@ -164,7 +165,10 @@ export default {
   sail artisan migrate:fresh --seed
 
 #Use_Technology
-・Larave 10（Laravel sail）
+・Git
+・VSCode
+・Larave 10.x（Laravel 
+・Vite & Tailwind CSS
 ・Docker
   ・Mysql
   ・
