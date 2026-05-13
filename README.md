@@ -22,6 +22,9 @@
  ・タグ編集ページ
  ・公開API
 
+#ER図
+![ER図](/er_diagram.png)
+
 #Environment_Setup
  0.DockerDesktopを起動しておく
  1.Laravelプロジェクトを作成する（ver.10.xを指定）
