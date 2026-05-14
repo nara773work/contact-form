@@ -17,7 +17,7 @@ class Contact extends Model
 
     public function tags()
 {
-    return $this->belongsToMany(Tag::class, 'contacts_tags');
+    return $this->belongsToMany(Tag::class, 'contact_tag');
 }
 
 }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Contact; 
+use App\Models\Tag;
 
 class ContactSeeder extends Seeder
 {
@@ -13,10 +14,10 @@ class ContactSeeder extends Seeder
      */
     public function run(): void
     {
-        $category = \App\Models\Category::first();
-
-        $Contacts=Contact::factory()
-        ->count(20)
-        ->create(['category_id'=>$category->id]);
+        Contact::factory(20)->create()->each(
+        fn($c) => $c->tags()->attach(
+        Tag::inRandomOrder()->take(rand(1,3))->pluck('id')
+    )
+);
     }
 }
