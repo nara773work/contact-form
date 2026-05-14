@@ -16,3 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+use App\Http\Controllers\IndexController;
+Route::get('contact',[IndexController::class,'index'])->middleware('auth');
+
+use App\Http\Controllers\ConfirmController;
+Route::post('contact/confirm',[ConfirmController::class,'store']);
+
+use App\Http\Controllers\ThanksController;
+Route::post('contact/thanks',[ThanksController::class,'index']);
+
+
+
