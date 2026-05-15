@@ -22,5 +22,8 @@ Route::get('contact',[ContactController::class,'index'])->middleware('auth');
 Route::post('contact/confirm',[ContactController::class,'confirm']);
 Route::post('/thanks',[ContactController::class,'thanks']);
 
-
-
+use App\Http\Controllers\AdminController;
+Route::get('admin',[AdminController::class,'index']);
+Route::get('admin/contacts/{contact}',[AdminController::class,'show']);
+Route::get('admin/tags/{tag}/edit',[AdminController::class,'edit']);
+Route::delete('admin/tags/{tag}',[AdminController::class,'destroy']);
