@@ -25,5 +25,7 @@ Route::post('/thanks',[ContactController::class,'thanks']);
 use App\Http\Controllers\AdminController;
 Route::get('admin',[AdminController::class,'index']);
 Route::get('admin/contacts/{contact}',[AdminController::class,'show']);
+Route::post('admin/tags',[AdminController::class,'store']);
 Route::get('admin/tags/{tag}/edit',[AdminController::class,'edit']);
+Route::put('admin/tags/{tag}',[AdminController::class,'update']);
 Route::delete('admin/tags/{tag}',[AdminController::class,'destroy']);
