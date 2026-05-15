@@ -14,17 +14,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/contact');
 });
 
-use App\Http\Controllers\IndexController;
-Route::get('contact',[IndexController::class,'index'])->middleware('auth');
+use App\Http\Controllers\ContactController;
+Route::get('contact',[ContactController::class,'index'])->middleware('auth');
+Route::post('contact/confirm',[ContactController::class,'confirm']);
+Route::post('/thanks',[ContactController::class,'thanks']);
 
-use App\Http\Controllers\ConfirmController;
-Route::post('contact/confirm',[ConfirmController::class,'store']);
-
-use App\Http\Controllers\ThanksController;
-Route::post('contact/thanks',[ThanksController::class,'index']);
-
-
-
+use App\Http\Controllers\AdminController;
+Route::get('admin',[AdminController::class,'index']);
+Route::get('admin/contacts/{contact}',[AdminController::class,'show']);
+Route::post('admin/tags',[AdminController::class,'store']);
+Route::get('admin/tags/{tag}/edit',[AdminController::class,'edit']);
+Route::put('admin/tags/{tag}',[AdminController::class,'update']);
+Route::delete('admin/tags/{tag}',[AdminController::class,'destroy']);
+Route::delete('admin/contacts/{contact}',[AdminController::class,'destroy']);
