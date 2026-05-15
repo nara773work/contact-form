@@ -13,7 +13,7 @@ class AdminController extends Controller
     public function index(){
         $categories = Category::all();
         $tags = Tag::all();
-        $contacts = Contact::paginate(7); 
+        $contacts = Contact::paginate(8); 
         return view('admin.index',compact('categories','tags','contacts'));
     }
 
