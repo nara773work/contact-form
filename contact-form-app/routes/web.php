@@ -29,3 +29,4 @@ Route::post('admin/tags',[AdminController::class,'store']);
 Route::get('admin/tags/{tag}/edit',[AdminController::class,'edit']);
 Route::put('admin/tags/{tag}',[AdminController::class,'update']);
 Route::delete('admin/tags/{tag}',[AdminController::class,'destroy']);
+Route::delete('admin/contacts/{contact}',[AdminController::class,'destroy']);

@@ -36,8 +36,9 @@ class AdminController extends Controller
         return redirect('/admin');
     }
 
-    public function destroy(Tag $tag){
+    public function destroy(Tag $tag, Contact $contact){
         $tag->delete();
+        $contact->delete();
         return redirect('/admin');
     }
 
