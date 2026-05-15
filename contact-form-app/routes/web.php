@@ -18,12 +18,12 @@ Route::get('/', function () {
 });
 
 use App\Http\Controllers\ContactController;
-Route::get('contact',[ContactController::class,'index'])->middleware('auth');
+Route::get('contact',[ContactController::class,'index']);
 Route::post('contact/confirm',[ContactController::class,'confirm']);
 Route::post('/thanks',[ContactController::class,'thanks']);
 
 use App\Http\Controllers\AdminController;
-Route::get('admin',[AdminController::class,'index']);
+Route::get('admin',[AdminController::class,'index'])->middleware('auth');
 Route::get('admin/contacts/{contact}',[AdminController::class,'show']);
 Route::post('admin/tags',[AdminController::class,'store']);
 Route::get('admin/tags/{tag}/edit',[AdminController::class,'edit']);
