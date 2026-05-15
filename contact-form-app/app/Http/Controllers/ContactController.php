@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Tag;
 
-class IndexController extends Controller
+class ContactController extends Controller
 {
     public function index(){
         $categories = Category::all();
@@ -15,7 +15,7 @@ class IndexController extends Controller
         return view('contact.index', compact('categories', 'tags'));
     }
     
-    public function store(Request $request){
+    public function confirm(Request $request){
 
     $validated = $request->validate([
     'first_name' => 'required',
@@ -27,15 +27,24 @@ class IndexController extends Controller
     'detail'     => 'required',
     'gender'     => 'required',
     'category_id' => 'required'
-]);
+    ]);
 
     $category = Category::find($validated['category_id']);
     $tags = collect();
 
-    if ($request->has('tag')) {
-        $tag_ids = Tag::whereIn('tad_id', $request->tag_id)->get();
+    if ($request->has('tag_ids')) {
+        $tag_ids = Tag::whereIn('id', $request->tag_ids)->get();
     }
-        return view('contact.confirm',compact('validated','category','tag_ids'));
+        return view('contact.confirm',compact('validated','category','tags'));
+    }
+
+    public function thanks(Request $request){
+
+
+    if ($request->has('tag_ids')) {
+        $contact->tags()->attach($request->tag_ids);
+    }
+        return view('contact.thanks');
     }
 
    
