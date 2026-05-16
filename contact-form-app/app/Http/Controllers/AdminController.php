@@ -10,10 +10,23 @@ use App\Models\Contact;
 
 class AdminController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $categories = Category::all();
         $tags = Tag::all();
-        $contacts = Contact::paginate(7); 
+        $query = Contact::query();
+        
+    
+        if ($request->has('keyword')) {
+            $keyword = $request->keyword;
+
+            $query->where(function ($q) use ($keyword) {
+                $q->where('last_name', 'like', "%{$keyword}%")
+                ->orWhere('first_name', 'like', "%{$keyword}%")
+                ->orWhere('address', 'like', "%{$keyword}%");
+            });
+        }
+
+        $contacts = $query->paginate(7); 
         return view('admin.index',compact('categories','tags','contacts'));
     }
 
