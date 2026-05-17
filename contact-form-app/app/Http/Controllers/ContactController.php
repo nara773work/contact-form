@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Models\Contact;
 use App\Http\Requests\ContactRequest;
 
 class ContactController extends Controller
@@ -17,21 +18,30 @@ class ContactController extends Controller
     }
     
     public function confirm(ContactRequest $request){
-    
-    $validated = $request->validated();
+        $validated = $request->validated();
+        $category = Category::find($validated['category_id']);
+        $tags = collect();
 
-    $category = Category::find($validated['category_id']);
-    $tags = collect();
-
-    if ($request->has('tag_ids')) {
-        $tag_ids = Tag::whereIn('id', $request->tag_ids)->get();
-    }
+        if ($request->has('tag_ids')) {
+            $tag_ids = Tag::whereIn('id', $request->tag_ids)->get();
+        }
         return view('contact.confirm',compact('validated','category','tags'));
     }
 
-    public function thanks(Request $request){
+    public function thanks(ContactRequest $request){
+    $validated = $request->validated();
 
-
+    $contact = Contact::create([
+        'first_name' => $validated['first_name'],
+        'last_name' => $validated['last_name'],
+        'gender'    => $validated['gender'],
+        'email'     => $validated['email'],
+        'address'   => $validated['address'],
+        'building'  => $validated['building'],
+        'tel'       => $validated['tel'],
+        'category_id' => $validated['category_id'] ,
+        'detail' => $validated['detail'],
+    ]);
     if ($request->has('tag_ids')) {
         $contact->tags()->attach($request->tag_ids);
     }

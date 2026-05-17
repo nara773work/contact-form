@@ -4,19 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\TagRequest;
+use App\Http\Requests\AdminRequest;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Contact;
 
 class AdminController extends Controller
 {
-    public function index(Request $request){
+    public function index(AdminRequest $request){
         $categories = Category::all();
         $tags = Tag::all();
         $query = Contact::query();
         
+        $validated = $request->validated();
     
-        if ($request->has('keyword')) {
+        if ($request->filled('keyword')) {
             $keyword = $request->keyword;
 
             $query->where(function ($q) use ($keyword) {
@@ -26,9 +28,24 @@ class AdminController extends Controller
             });
         }
 
-        $contacts = $query->paginate(7); 
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        if ($request->has('gender') && (int)$request->gender !== 0) {
+            $query->where('gender', (int)$request->gender);
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('updated_at', $request->date);
+        }
+        
+        
+        $contacts = $query->orderBy('created_at','desc')->paginate(7); 
         return view('admin.index',compact('categories','tags','contacts'));
     }
+
+    
 
     public function show(Contact $contact){
         return view('admin.show',compact('contact'));

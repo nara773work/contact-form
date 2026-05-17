@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('tel',11);
             $table->string('address');
-            $table->string('building')->nullnable();
+            $table->string('building')->nullable()->default('');
             $table->string('detail',120);
             $table->timestamps();
         });

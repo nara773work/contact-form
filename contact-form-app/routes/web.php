@@ -20,6 +20,7 @@ Route::get('/', function () {
 use App\Http\Controllers\ContactController;
 Route::get('contact',[ContactController::class,'index']);
 Route::post('contact/confirm',[ContactController::class,'confirm']);
+Route::post('contact/store',[ContactController::class,'store']);
 Route::post('/thanks',[ContactController::class,'thanks']);
 
 use App\Http\Controllers\AdminController;
