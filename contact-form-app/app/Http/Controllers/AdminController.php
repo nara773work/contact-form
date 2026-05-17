@@ -13,7 +13,21 @@ class AdminController extends Controller
     public function index(){
         $categories = Category::all();
         $tags = Tag::all();
+        
+        $query = Contact::query();
+        
+        if ($request->has('keyword')) {
+            $keyword = $request->keyword;
+
+            $query->where(function ($q) use ($keyword) {
+                $q->where('last_name', 'like', "%{$keyword}%")
+                ->orWhere('first_name', 'like', "%{$keyword}%")
+                ->orWhere('address', 'like', "%{$keyword}%");
+            });
+        }
+
         $contacts = Contact::paginate(8); 
+
         return view('admin.index',compact('categories','tags','contacts'));
     }
 
