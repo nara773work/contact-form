@@ -10,12 +10,10 @@ use App\Models\Contact;
 
 class AdminController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $categories = Category::all();
         $tags = Tag::all();
-        
-        $query = Contact::query();
-        
+      
         if ($request->has('keyword')) {
             $keyword = $request->keyword;
 
@@ -25,9 +23,7 @@ class AdminController extends Controller
                 ->orWhere('address', 'like', "%{$keyword}%");
             });
         }
-
-        $contacts = Contact::paginate(8); 
-
+         $contacts = Contact::paginate(8); 
         return view('admin.index',compact('categories','tags','contacts'));
     }
 
@@ -50,8 +46,9 @@ class AdminController extends Controller
         return redirect('/admin');
     }
 
-    public function destroy(Tag $tag){
+    public function destroy(Tag $tag, Contact $contact){
         $tag->delete();
+        $contact->delete();
         return redirect('/admin');
     }
 

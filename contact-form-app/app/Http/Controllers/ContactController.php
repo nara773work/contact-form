@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Http\Requests\ContactRequest;
 
 class ContactController extends Controller
 {
@@ -15,19 +16,9 @@ class ContactController extends Controller
         return view('contact.index', compact('categories', 'tags'));
     }
     
-    public function confirm(Request $request){
-
-    $validated = $request->validate([
-    'first_name' => 'required',
-    'last_name'  => 'required',
-    'email'      => 'required',
-    'tel'        => 'required',
-    'address'    => 'nullable',
-    'building'   => 'nullable',
-    'detail'     => 'required',
-    'gender'     => 'required',
-    'category_id' => 'required'
-    ]);
+    public function confirm(ContactRequest $request){
+    
+    $validated = $request->validated();
 
     $category = Category::find($validated['category_id']);
     $tags = collect();

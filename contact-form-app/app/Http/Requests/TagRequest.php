@@ -22,7 +22,17 @@ class TagRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required'
+            'name' => 'required|string|max:50|unique:tags,name'
         ];
     }
+
+        public function messages(): array
+    {
+        return [
+            'name.required' => 'タグ名は必須です',
+            'name.max'      => '50字以内に収めて下さい'
+        ];
+    }
+
+
 }
