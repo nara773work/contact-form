@@ -13,9 +13,7 @@ class AdminController extends Controller
     public function index(Request $request){
         $categories = Category::all();
         $tags = Tag::all();
-        $query = Contact::query();
-        
-    
+      
         if ($request->has('keyword')) {
             $keyword = $request->keyword;
 
@@ -25,8 +23,7 @@ class AdminController extends Controller
                 ->orWhere('address', 'like', "%{$keyword}%");
             });
         }
-
-        $contacts = $query->paginate(7); 
+         $contacts = Contact::paginate(8); 
         return view('admin.index',compact('categories','tags','contacts'));
     }
 
