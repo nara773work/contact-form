@@ -13,8 +13,9 @@ class AdminController extends Controller
     public function index(Request $request){
         $categories = Category::all();
         $tags = Tag::all();
+        $query = Contact::query();  
       
-        if ($request->has('keyword')) {
+        if ($request->filled('keyword')) {
             $keyword = $request->keyword;
 
             $query->where(function ($q) use ($keyword) {
@@ -23,7 +24,20 @@ class AdminController extends Controller
                 ->orWhere('address', 'like', "%{$keyword}%");
             });
         }
-         $contacts = Contact::paginate(8); 
+
+        if ($request->filled('category_id')) {
+            $query->where('category_id', (int)$request->category_id);
+        }
+
+        if ($request->has('gender') && (int)$request->gender !== 0) {
+            $query->where('gender', (int)$request->gender);
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('updated_at', $request->date);
+        }
+
+        $contacts = $query->paginate(8); 
         return view('admin.index',compact('categories','tags','contacts'));
     }
 
