@@ -17,7 +17,7 @@ class AdminController extends Controller
         $query = Contact::query();
         
         $validated = $request->validated();
-    
+      
         if ($request->filled('keyword')) {
             $keyword = $request->keyword;
 
@@ -29,7 +29,8 @@ class AdminController extends Controller
         }
 
         if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
+
+            $query->where('category_id', (int)$request->category_id); 
         }
 
         if ($request->has('gender') && (int)$request->gender !== 0) {
@@ -39,10 +40,9 @@ class AdminController extends Controller
         if ($request->filled('date')) {
             $query->whereDate('updated_at', $request->date);
         }
-        
-        
-        $contacts = $query->orderBy('created_at','desc')->paginate(7); 
-
+       
+        $contacts = $query->orderBy('created_at','desc')->paginate(7);        
+ 
         return view('admin.index',compact('categories','tags','contacts'));
     }
 

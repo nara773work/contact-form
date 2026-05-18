@@ -13,7 +13,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+        Contact::class => ContactPolicy::class,
+        Tag::class => TagPolicy::class,
     ];
 
     /**
@@ -21,6 +22,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        
     }
 }
