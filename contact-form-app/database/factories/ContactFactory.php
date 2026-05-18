@@ -24,7 +24,10 @@ class ContactFactory extends Factory
             'building'=>fake()->text(10),
             'detail'=>fake()->text(80),
             'category_id'=>fake()->numberBetween(1, 5),
-            'updated_at' =>fake()->dateTimeBetween('-1 year', 'now')
+            'updated_at'=>fake()->dateTimeBetween('-1 year', 'now')
+
+           
+
         ];
     }
 }

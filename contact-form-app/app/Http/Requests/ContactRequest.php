@@ -39,17 +39,16 @@ class ContactRequest extends FormRequest
         public function messages(): array
 {
     return [
-        'first_name.required' => '名前（名）は必須です',
-        'last_name.required'  => '名前（姓）は必須です',
-        'gender.required'     => '性別の選択は必須です', 
-        'email.required'      => 'メールアドレスは必須です',
-        'email.email'         => 'メールアドレスの形式が正しくありません',
-        'address.required'    => '住所の入力は必須です',
-        'tel.required'        => '電話番号の入力は必須です',
-        'tel.regex'           => '電話番号は10〜11桁の数字で入力して下さい',
+        'first_name.required' => '名を入力してください',
+        'last_name.required'  => '姓を入力してください',
+        'gender.required'     => '性別を入力してください', 
+        'email.required'      => 'メールアドレスの入力してください',
+        'email.email'         => 'メールアドレスはメール形式で入力してください',
+        'tel.required'        => '電話番号を入力してください',
+        'address.required'    => '住所を入力してください',
         'category_id'         =>'カテゴリーを選択して下さい',
-        'detail.required'     => 'お問い合わせ内容は必須です',
-        'detail.max'          => 'お問い合わせ内容は120文字以内です',
+        'detail.required'     => 'お問い合わせ内容を入力してください',
+        'detail.max'          => 'お問い合わせ内容は120文字以内で入力してください',
     ];
 }
 }

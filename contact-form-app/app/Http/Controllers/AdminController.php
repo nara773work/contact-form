@@ -4,29 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\TagRequest;
+use App\Http\Requests\AdminRequest;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Contact;
 
 class AdminController extends Controller
 {
-    public function index(Request $request){
+    public function index(AdminRequest $request){
         $categories = Category::all();
         $tags = Tag::all();
-        $query = Contact::query();  
+        $query = Contact::query();
+        
+        $validated = $request->validated();
       
         if ($request->filled('keyword')) {
             $keyword = $request->keyword;
 
             $query->where(function ($q) use ($keyword) {
-                $q->where('last_name', 'like', "%{$keyword}%")
-                ->orWhere('first_name', 'like', "%{$keyword}%")
-                ->orWhere('address', 'like', "%{$keyword}%");
+                $q->where('last_name', $keyword)
+                ->orWhere('first_name', $keyword)
+                ->orWhere('address','like',"%{$keyword}%");
             });
         }
 
         if ($request->filled('category_id')) {
-            $query->where('category_id', (int)$request->category_id);
+
+            $query->where('category_id', (int)$request->category_id); 
         }
 
         if ($request->has('gender') && (int)$request->gender !== 0) {
@@ -36,8 +40,9 @@ class AdminController extends Controller
         if ($request->filled('date')) {
             $query->whereDate('updated_at', $request->date);
         }
-
-        $contacts = $query->paginate(8); 
+       
+        $contacts = $query->orderBy('created_at','desc')->paginate(7);        
+ 
         return view('admin.index',compact('categories','tags','contacts'));
     }
 
@@ -60,8 +65,12 @@ class AdminController extends Controller
         return redirect('/admin');
     }
 
-    public function destroy(Tag $tag, Contact $contact){
+    public function destroyTag(Tag $tag){
         $tag->delete();
+        return redirect('/admin');
+    }
+
+    public function destroyContact(Contact $contact){
         $contact->delete();
         return redirect('/admin');
     }
