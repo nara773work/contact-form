@@ -4,7 +4,7 @@
             <h1 class="text-2xl font-serif text-[#6b5744] text-center mb-10">Confirm</h1>
 
             <!-- 確認画面 -->
-            <form action="/thanks" method="post">
+            <form action="/contact/store" method="post">
                 @csrf
 
                 <!-- お名前 -->

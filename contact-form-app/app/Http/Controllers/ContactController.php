@@ -42,9 +42,6 @@ class ContactController extends Controller
             'category_id' => $validated['category_id'] ,
             'detail'    => $validated['detail'],
         ]);
-    }
-
-    public function thanks(){
         return view('contact.thanks');
-        }
+    }
 }

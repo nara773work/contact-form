@@ -24,7 +24,7 @@ class AdminController extends Controller
             $query->where(function ($q) use ($keyword) {
                 $q->where('last_name', $keyword)
                 ->orWhere('first_name', $keyword)
-                ->orWhere('address', $keyword);
+                ->orWhere('address','like',"%{$keyword}%");
             });
         }
 
