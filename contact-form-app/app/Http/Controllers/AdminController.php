@@ -22,9 +22,9 @@ class AdminController extends Controller
             $keyword = $request->keyword;
 
             $query->where(function ($q) use ($keyword) {
-                $q->where('last_name', 'like', "%{$keyword}%")
-                ->orWhere('first_name', 'like', "%{$keyword}%")
-                ->orWhere('address', 'like', "%{$keyword}%");
+                $q->where('last_name', $keyword)
+                ->orWhere('first_name', $keyword)
+                ->orWhere('address', $keyword);
             });
         }
 
@@ -42,10 +42,9 @@ class AdminController extends Controller
         
         
         $contacts = $query->orderBy('created_at','desc')->paginate(7); 
+
         return view('admin.index',compact('categories','tags','contacts'));
     }
-
-    
 
     public function show(Contact $contact){
         return view('admin.show',compact('contact'));
@@ -66,8 +65,12 @@ class AdminController extends Controller
         return redirect('/admin');
     }
 
-    public function destroy(Tag $tag, Contact $contact){
+    public function destroyTag(Tag $tag){
         $tag->delete();
+        return redirect('/admin');
+    }
+
+    public function destroyContact(Contact $contact){
         $contact->delete();
         return redirect('/admin');
     }

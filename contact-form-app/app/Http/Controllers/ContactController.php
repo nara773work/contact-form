@@ -22,31 +22,29 @@ class ContactController extends Controller
         $category = Category::find($validated['category_id']);
         $tags = collect();
 
-        if ($request->has('tag_ids')) {
-            $tag_ids = Tag::whereIn('id', $request->tag_ids)->get();
+        if ($request->has('tags')) {
+            $tags = Tag::whereIn('id', $request->tags)->get();
         }
         return view('contact.confirm',compact('validated','category','tags'));
     }
 
-    public function thanks(ContactRequest $request){
-    $validated = $request->validated();
+    public function store(ContactRequest $request){
+        $validated = $request->validated();
 
-    $contact = Contact::create([
-        'first_name' => $validated['first_name'],
-        'last_name' => $validated['last_name'],
-        'gender'    => $validated['gender'],
-        'email'     => $validated['email'],
-        'address'   => $validated['address'],
-        'building'  => $validated['building'],
-        'tel'       => $validated['tel'],
-        'category_id' => $validated['category_id'] ,
-        'detail' => $validated['detail'],
-    ]);
-    if ($request->has('tag_ids')) {
-        $contact->tags()->attach($request->tag_ids);
+        $contact = Contact::create([
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'gender'    => $validated['gender'],
+            'email'     => $validated['email'],
+            'address'   => $validated['address'],
+            'building'  => $validated['building'],
+            'tel'       => $validated['tel'],
+            'category_id' => $validated['category_id'] ,
+            'detail'    => $validated['detail'],
+        ]);
     }
+
+    public function thanks(){
         return view('contact.thanks');
-    }
-
-   
+        }
 }
