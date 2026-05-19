@@ -21,12 +21,20 @@ class AdminRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'keyword' => 'nullable|string|max:255',
             'gender'  => 'nullable|integer|in:0,1,2,3',
             'category_id' => 'nullable|integer|exists:categories,id',
             'date'    => 'nullable|date'
-        ];
+            ];
+
+        if ($this->is('api/*')) {
+        $rules['gender'] = 'nullable|integer|in:1,2,3';
+        $rules['page'] = 'nullable|integer|min:1';
+        $rules['per_page'] = 'nullable|integer|min:1|max:100';
+
+    }
+     return $rules;
     }
 
         public function messages(): array
