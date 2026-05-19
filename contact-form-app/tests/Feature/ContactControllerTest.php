@@ -34,7 +34,7 @@ class ContactControllerTest extends TestCase
         $response->assertSee((string)$tags->get(1)->id);
 
         //thanksページが正常に表示される
-        $response = $this->post(route('contact.thanks'));
+        $response = $this->get(route('contact.thanks'));
         $response->assertStatus(200);
     }
 

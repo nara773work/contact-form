@@ -44,4 +44,8 @@ class ContactController extends Controller
         ]);
         return view('contact.thanks');
     }
+
+    public function thanks(){
+        return view('contact.thanks');
+        }
 }

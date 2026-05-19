@@ -22,7 +22,7 @@ use App\Http\Controllers\ContactController;
 Route::get('contact',[ContactController::class,'index'])->name('contact.index');
 Route::post('contact/confirm',[ContactController::class,'confirm'])->name('contact.confirm');
 Route::post('contact/store',[ContactController::class,'store'])->name('contact.store');
-Route::post('/thanks',[ContactController::class,'thanks'])->name('contact.thanks');
+Route::get('/thanks',[ContactController::class,'thanks'])->name('contact.thanks');
 
 //admin関連
 use App\Http\Controllers\AdminController;
