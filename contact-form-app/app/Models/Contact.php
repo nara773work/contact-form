@@ -8,16 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Contact extends Model
 {
     use HasFactory;
-    protected $fillable = ['category_id','first_name', 'last_name', 'gender', 'email','tel','address','building','detail'];
+
+    protected $fillable = ['category_id', 'first_name', 'last_name', 'gender', 'email', 'tel', 'address', 'building', 'detail'];
 
     public function category()
-{
-    return $this->belongsTo(Category::class);
-}
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function tags()
-{
-    return $this->belongsToMany(Tag::class, 'contact_tag');
-}
-
+    {
+        return $this->belongsToMany(Tag::class, 'contact_tag');
+    }
 }

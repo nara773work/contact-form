@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AdminRequest extends FormRequest
@@ -11,33 +12,34 @@ class AdminRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return True;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         $rules = [
             'keyword' => 'nullable|string|max:255',
-            'gender'  => 'nullable|integer|in:0,1,2,3',
+            'gender' => 'nullable|integer|in:0,1,2,3',
             'category_id' => 'nullable|integer|exists:categories,id',
-            'date'    => 'nullable|date'
-            ];
+            'date' => 'nullable|date',
+        ];
 
         if ($this->is('api/*')) {
-        $rules['gender'] = 'nullable|integer|in:1,2,3';
-        $rules['page'] = 'nullable|integer|min:1';
-        $rules['per_page'] = 'nullable|integer|min:1|max:100';
+            $rules['gender'] = 'nullable|integer|in:1,2,3';
+            $rules['page'] = 'nullable|integer|min:1';
+            $rules['per_page'] = 'nullable|integer|min:1|max:100';
 
-    }
-     return $rules;
+        }
+
+        return $rules;
     }
 
-        public function messages(): array
+    public function messages(): array
     {
         return [
             'keyword.max' => '255字以内に収めて下さい',

@@ -2,20 +2,20 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
     use RefreshDatabase;
-    public function test_login(): void
-{
-    $response = $this->get(route('login'));
 
-    $response->assertStatus(200);
-}
+    public function test_login(): void
+    {
+        $response = $this->get(route('login'));
+
+        $response->assertStatus(200);
+    }
 
     public function test_login_crrect(): void
     {
@@ -33,6 +33,7 @@ class AuthTest extends TestCase
         // Assert
         $this->assertAuthenticatedAs($user);
     }
+
     public function test_null_email(): void
     {
         // Act
@@ -60,6 +61,7 @@ class AuthTest extends TestCase
         // Assert
         $response->assertSessionHasErrors('password');
     }
+
     public function test_logout(): void
     {
         // Arrange

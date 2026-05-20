@@ -2,36 +2,35 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Tag;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class RelationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_category_hasMany_contact(): void
+    public function test_category_has_many_contact(): void
     {
-        $this->seed(); 
+        $this->seed();
         $category = Category::first();
         $contacts = Contact::factory()->create(['category_id' => $category->id]);
 
         $this->assertDatabaseHas('contacts', [
-        'id' => $contacts->id,
-        'category_id' => $category->id,
-    ]);
+            'id' => $contacts->id,
+            'category_id' => $category->id,
+        ]);
         $this->assertEquals($contacts->category_id, $category->id);
     }
 
-    public function test_contacts_belongsTo_categoriy(): void
+    public function test_contacts_belongs_to_categoriy(): void
     {
         $this->seed();
 
         $category = Category::first();
-        $contacts = Contact::factory()->create(['category_id'=>$category->id]);
+        $contacts = Contact::factory()->create(['category_id' => $category->id]);
         $tags = Tag::take(3)->get();
 
         $contacts->tags()->sync($tags->pluck('id')->toArray());
@@ -48,10 +47,10 @@ class RelationTest extends TestCase
         $tags->contacts()->sync($contacts->pluck('id')->toArray());
 
         foreach ($contacts as $contact) {
-        $this->assertDatabaseHas('contact_tag', [
-            'contact_id' => $contact->id,
-            'tag_id'     => $tags->id,
-        ]);
+            $this->assertDatabaseHas('contact_tag', [
+                'contact_id' => $contact->id,
+                'tag_id' => $tags->id,
+            ]);
+        }
     }
-}
 }
