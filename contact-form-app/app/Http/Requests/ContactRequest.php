@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ContactRequest extends FormRequest
@@ -11,44 +12,54 @@ class ContactRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return True;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            
-            'first_name'  => 'required|string|max:255',
-            'last_name'   => 'required|string|max:255',
-            'gender'      => 'required|integer|in:1,2,3',
-            'email'       => 'required|string|email|max:255',
-            'tel'         => 'required|string|regex:/^[0-9]{10,11}$/',
-            'address'     => 'required|string|max:255',
-            'building'    => 'nullable|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'gender' => 'required|integer|in:1,2,3',
+            'email' => 'required|string|email|max:255',
+            'tel' => 'required|string|regex:/^[0-9]{10,11}$/',
+            'address' => 'required|string|max:255',
+            'building' => 'nullable|string|max:255',
             'category_id' => 'required|integer|exists:categories,id',
-            'detail'      => 'required|string|max:120',
-        
+            'tag_ids'  => 'nullable|array',
+            'tag_ids.*'=> 'integer|exists:tags,id',
+            'detail' => 'required|string|max:120',
+
         ];
     }
 
-        public function messages(): array
-{
-    return [
-        'first_name.required' => '名を入力してください',
-        'last_name.required'  => '姓を入力してください',
-        'gender.required'     => '性別を入力してください', 
-        'email.required'      => 'メールアドレスの入力してください',
-        'email.email'         => 'メールアドレスはメール形式で入力してください',
-        'tel.required'        => '電話番号を入力してください',
-        'address.required'    => '住所を入力してください',
-        'category_id'         =>'カテゴリーを選択して下さい',
-        'detail.required'     => 'お問い合わせ内容を入力してください',
-        'detail.max'          => 'お問い合わせ内容は120文字以内で入力してください',
-    ];
-}
+    public function messages(): array
+    {
+        if ($this->is('api/*')) {
+        return [
+            'tel.regex' => '電話番号はハイフンなしの10〜11桁で入力してください。',
+            'gender.in'   => '性別の値が不正です',
+            'category_id.exists'    => '選択されたカテゴリーが存在しません',
+            'pcategory_id.exists'    => '選択されたタグが存在しません',
+        ];
+    }
+        return [
+            'first_name.required' => '名を入力してください',
+            'last_name.required' => '姓を入力してください',
+            'gender.required' => '性別を入力してください',
+            'email.required' => 'メールアドレスの入力してください',
+            'email.email' => 'メールアドレスはメール形式で入力してください',
+            'tel.required' => '電話番号を入力してください',
+            'address.required' => '住所を入力してください',
+            'category_id' => 'カテゴリーを選択して下さい',
+            'detail.required' => 'お問い合わせ内容を入力してください',
+            'detail.max' => 'お問い合わせ内容は120文字以内で入力してください',
+        ];
+
+    }
 }

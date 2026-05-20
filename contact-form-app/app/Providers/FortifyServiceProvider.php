@@ -19,10 +19,7 @@ class FortifyServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap any application services.
@@ -48,7 +45,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::loginView(function () {
             return view('auth.login');
         });
-        
+
         Fortify::registerView(function () {
             return view('auth.register');
         });

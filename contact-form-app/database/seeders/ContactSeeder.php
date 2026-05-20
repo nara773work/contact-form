@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\Contact; 
+use App\Models\Contact;
 use App\Models\Tag;
+use Illuminate\Database\Seeder;
 
 class ContactSeeder extends Seeder
 {
@@ -15,9 +14,9 @@ class ContactSeeder extends Seeder
     public function run(): void
     {
         Contact::factory(20)->create()->each(
-        fn($c) => $c->tags()->attach(
-        Tag::inRandomOrder()->take(rand(1,3))->pluck('id')
-    )
-);
+            fn ($c) => $c->tags()->attach(
+                Tag::inRandomOrder()->take(rand(1, 3))->pluck('id')
+            )
+        );
     }
 }

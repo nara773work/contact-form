@@ -168,21 +168,42 @@ export default {
   sail artisan migrate:fresh --seed
 
 #Use_Technology
-・Git
-・VSCode
-・Larave 10.x（Laravel 
-・Vite & Tailwind CSS
+OS     : Windows 11 25H2
+PHP    : 8.2
+Larave : 10.x
+DB     : MySQL8.0
+Webサーバー   :Nginx
+フロントエンド :Vite & Tailwind CSS^3.4.0
+開発ツール
 ・Docker
-  ・Mysql
-  ・
-  ・
-  ・
-  ・
-  ・
+・Laravel sail
+・phpMyAdmin
 
 #API_Endpoint
+ GETメソッド /api/contacts　　　　　　　  お問い合わせ一覧ページを取得できる
+ GETメソッド /api/contacts/{contacts}　  お問い合わせ詳細ページを取得できる　
+ POSTメソッド /api/contacts　　　　　　   お問い合わせを送信できる
+ PUTメソッド /api/contacts/{contacts}　　お問い合わせを更新できる
+ DELETEメソッド /api/contacts/{contacts} お問い合わせを削除できる
 
 #Development_Environment_URL
+お問い合わせ入力ページ
+ http::/localhost/contact
+お問い合わせ確認ページ
+ http::/localhost/contact/confirm
+thanksページ
+ http::/localhost/contact/thanks
+
+管理画面
+ http::/localhost/admin/
+お問い合わせ詳細ページ
+ http::/localhost/admin/contacts/{contact}
+タグ編集ページ
+ http::/localhost/admin/tags/{tags}/edit
+ログイン画面
+ http::/localhost/login
+管理者登録画面
+ http::/localhost/register
 
 #Deveroper
  奈良 那々美 (Nara Nanami)
