@@ -11,6 +11,7 @@ use App\Http\Requests\ContactRequest;
 class ContactController extends Controller
 {
     public function index(){
+        
         $categories = Category::all();
         $tags = Tag::all(); 
 

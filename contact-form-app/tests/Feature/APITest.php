@@ -14,14 +14,37 @@ class APITest extends TestCase
      
     use RefreshDatabase;
     public function test_view_contact_list()
-    {
+    {  
         $this->seed(); 
         $categories = Category::all();
-        $tags = Tag::all();
 
+        //JSON形式で一覧が返る
         $response = $this->getJson('/api/contacts');
-
         $response->assertStatus(200);
+
+        //ページネーションが機能している
+        $response = $this->get('/api/contacts?page=21');
+        $response->assertStatus(200);
+
+        //検索が機能している
+        Contact::factory()->create([
+        'first_name' => 'Test',
+        'category_id' => 1,
+        ]);
+        Contact::factory()->create([
+        'first_name' => 'Other',
+        'category_id' => 1,
+        ]);
+        
+        $response = $this->getJson('/api/contacts?first_name=Test&category_id=1');
+        $response->assertSee('Test');
+        
+        //バリデーションエラー
+        $response = $this->postJson('/api/contacts', [
+        'first_name' => ''
+        ]);
+        $response->assertStatus(422);
+
     }
 
     public function test_create(): void
@@ -44,6 +67,12 @@ class APITest extends TestCase
         ]);
 
         $response->assertStatus(201);
+
+        //バリデーションエラー
+        $response = $this->postJson('/api/contacts', [
+        'first_name' => ''
+        ]);
+        $response->assertStatus(422);        
     }
     public function test_view_show(){
         $this->seed(); 
@@ -53,6 +82,9 @@ class APITest extends TestCase
         $contact = Contact::factory()->create();
         $response = $this->getJson("/api/contacts/{$contact->id}");
         $response->assertStatus(200);
+
+        $response = $this->getJson("/api/contacts/0");
+        $response->assertStatus(404);
     }
     public function test_update()
     {
@@ -74,6 +106,16 @@ class APITest extends TestCase
         ]);
 
         $response->assertStatus(200);
+
+        $response = $this->getJson("/api/contacts/0");
+        $response->assertStatus(404);
+
+
+        //バリデーションエラー
+        $response = $this->putJson("/api/contacts/{$contact->id}", [
+        'first_name' => ''
+        ]);
+        $response->assertStatus(422);
     }
      public function test_delete()
     {
@@ -84,6 +126,8 @@ class APITest extends TestCase
         $response = $this->deleteJson("/api/contacts/{$contact->id}");
 
         $response->assertStatus(204);
-    
+
+        $response = $this->getJson("/api/contacts/{$contact->id}");
+        $response->assertStatus(404);
 }
 }

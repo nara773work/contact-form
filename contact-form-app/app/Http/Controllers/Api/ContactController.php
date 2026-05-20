@@ -17,11 +17,22 @@ class ContactController extends Controller
     public function index(AdminRequest $request)
     {
         
-        $validated = $request->validated();
+         $perPage = $request->is('api/*')
+        ? ($request->per_page ?? 20)
+        : ($request->per_page ?? 7);
 
-        return response()->json([
-         'data' => Contact::all()
-    ], 200);
+        $query = Contact::query();
+
+    
+        if ($request->filled('first_name')) {
+            $query->where('first_name', 'like', "%{$request->first_name}%");
+    }
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+    }
+
+
+        return $query->paginate($perPage);
 
     }
 
@@ -74,14 +85,12 @@ class ContactController extends Controller
             'detail'      => 'required|string|max:120',
         ]);
 
-        $contact->update($validated);
+        $contact->tags()->sync($request->input('tag_ids', []));
 
         return response()->json([
             'message' => 'お問い合わせを更新しました',
             'data' => $contact
         ], 200);
-
-
     }
 
     /**
