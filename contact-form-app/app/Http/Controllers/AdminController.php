@@ -39,6 +39,8 @@ class AdminController extends Controller
         $contacts = $query->orderBy('created_at', 'desc')->paginate(7);
 
         return view('admin.index', compact('categories', 'tags', 'contacts'));
+
+        return csv('admin.index', compact('categories', 'tags', 'contacts'));
     }
 
     public function show(Contact $contact)
