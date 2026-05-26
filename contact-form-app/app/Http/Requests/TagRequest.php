@@ -32,6 +32,7 @@ class TagRequest extends FormRequest
         return [
             'name.required' => 'タグ名は必須です',
             'name.max' => '50字以内に収めて下さい',
+            'name.unique' => 'そのタグ名は既に使用されています',
         ];
     }
 }

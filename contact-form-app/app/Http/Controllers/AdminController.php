@@ -24,12 +24,8 @@ class AdminController extends Controller
             $query->where(function ($q) use ($keyword) {
                 $q->where('last_name', $keyword)
                     ->orWhere('first_name', $keyword)
-                    ->orWhere('address', 'like', "%{$keyword}%");
+                    ->orwhere('email', $keyword);
             });
-        }
-
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
         }
 
         if ($request->has('gender') && (int) $request->gender !== 0) {
@@ -37,7 +33,7 @@ class AdminController extends Controller
         }
 
         if ($request->filled('date')) {
-            $query->whereDate('updated_at', $request->date);
+            $query->whereDate('created_at', $request->date);
         }
 
         $contacts = $query->orderBy('created_at', 'desc')->paginate(7);

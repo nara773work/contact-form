@@ -47,6 +47,10 @@ class ContactController extends Controller
             'detail' => $validated['detail'],
         ]);
 
+        if (! empty($validated['tag_ids'])) {
+            $contact->tags()->attach($validated['tag_ids']);
+        }
+
         return view('contact.thanks');
     }
 

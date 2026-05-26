@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminRequest;
 use App\Http\Requests\ContactRequest;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
-use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
@@ -23,11 +22,23 @@ class ContactController extends Controller
 
         $query = Contact::query();
 
-        if ($request->filled('first_name')) {
-            $query->where('first_name', 'like', "%{$request->first_name}%");
+        if ($request->filled('keyword')) {
+            $keyword = $request->keyword;
+
+            $query->where(function ($q) use ($keyword) {
+                $q->where('last_name', $keyword)
+                    ->orWhere('first_name', $keyword)
+                    ->orwhere('email', $keyword);
+            });
         }
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
+        }
+        if ($request->filled('date')) {
+            $query->where('created_at', $request->date);
+        }
+        if ($request->filled('gender')) {
+            $query->where('gender', $request->gender);
         }
 
         return $query->paginate($perPage);
@@ -57,7 +68,7 @@ class ContactController extends Controller
      */
     public function show(string $id)
     {
-        $contact = Contact::findOrFail($id);
+        $contact = Contact::with('tags')->findOrFail($id);
 
         return response()->json([
             'data' => $contact,
@@ -67,28 +78,10 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ContactRequest $request, string $id)
     {
         $contact = Contact::findOrfail($id);
-
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'gender' => 'required|integer|in:1,2,3',
-            'email' => 'required|string|email|max:255',
-            'tel' => 'required|string|regex:/^[0-9]{10,11}$/',
-            'address' => 'required|string|max:255',
-            'building' => 'nullable|string|max:255',
-            'category_id' => 'required|integer|exists:categories,id',
-            'detail' => 'required|string|max:120',
-        ]);
-
         $contact->tags()->sync($request->input('tag_ids', []));
-
-        return response()->json([
-            'message' => 'お問い合わせを更新しました',
-            'data' => $contact,
-        ], 200);
     }
 
     /**

@@ -33,7 +33,6 @@ class AdminRequest extends FormRequest
             $rules['gender'] = 'nullable|integer|in:1,2,3';
             $rules['page'] = 'nullable|integer|min:1';
             $rules['per_page'] = 'nullable|integer|min:1|max:100';
-
         }
 
         return $rules;
@@ -41,6 +40,12 @@ class AdminRequest extends FormRequest
 
     public function messages(): array
     {
+        if ($this->is('api/*')) {
+            return [
+                'gender.in' => '性別の値が不正です',
+                'category_id.exists' => '選択されたカテゴリーが存在しません'];
+        }
+
         return [
             'keyword.max' => '255字以内に収めて下さい',
         ];

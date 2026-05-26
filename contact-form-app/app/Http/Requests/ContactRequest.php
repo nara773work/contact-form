@@ -31,8 +31,8 @@ class ContactRequest extends FormRequest
             'address' => 'required|string|max:255',
             'building' => 'nullable|string|max:255',
             'category_id' => 'required|integer|exists:categories,id',
-            'tag_ids'  => 'nullable|array',
-            'tag_ids.*'=> 'integer|exists:tags,id',
+            'tag_ids' => 'nullable|array',
+            'tag_ids.*' => 'integer|exists:tags,id',
             'detail' => 'required|string|max:120',
 
         ];
@@ -41,13 +41,14 @@ class ContactRequest extends FormRequest
     public function messages(): array
     {
         if ($this->is('api/*')) {
-        return [
-            'tel.regex' => '電話番号はハイフンなしの10〜11桁で入力してください。',
-            'gender.in'   => '性別の値が不正です',
-            'category_id.exists'    => '選択されたカテゴリーが存在しません',
-            'pcategory_id.exists'    => '選択されたタグが存在しません',
-        ];
-    }
+            return [
+                'tel.regex' => '電話番号はハイフンなしの10〜11桁で入力してください。',
+                'gender.in' => '性別の値が不正です',
+                'category_id.exists' => '選択されたカテゴリーが存在しません',
+                'pcategory_id.exists' => '選択されたタグが存在しません',
+            ];
+        }
+
         return [
             'first_name.required' => '名を入力してください',
             'last_name.required' => '姓を入力してください',
