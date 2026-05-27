@@ -69,8 +69,7 @@ class ContactValidateTest extends TestCase
             'address' => 'Test',
             'building' => '',
             'category_id' => 4,
-            'tag_ids' => 'Tag',
-            'tag_ids.*' => 1,
+            'tag_ids' => [1,2],
             'detail' => 'detail',
         ],
         [
@@ -82,8 +81,7 @@ class ContactValidateTest extends TestCase
             'address' => 'test',
             'building' => '',
             'category_id' => 3,
-            'tag_ids' => 'tag',
-            'tag_ids.*' => 3,
+            'tag_ids' => 3,
             'detail' => 'detail',
         ]
         ]);
