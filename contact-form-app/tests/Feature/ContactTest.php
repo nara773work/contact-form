@@ -61,4 +61,24 @@ class ContactTest extends TestCase
 
         $response->assertOk();
     }
-}
+
+    public function test_cannot_submmit(): void
+    {
+        $data = ([
+            'first_name' => 'Test',
+            'last_name' => 'Name',
+            'gender' => 1,
+            'email' => 'Test',
+            'tel' => '00012341234',
+            'address' => 'Test',
+            'building' => '',
+            'category_id' => 4,
+            'tag_ids' => [1,2],
+            'detail' => 'detail',
+        ]);
+
+        $response = $this->post('/contact/store', $data);
+        $response->assertSessionHasErrors(['email']);
+    }
+    }
+
