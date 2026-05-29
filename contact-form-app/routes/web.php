@@ -29,7 +29,8 @@ Route::get('/thanks', [ContactController::class, 'thanks'])->name('contact.thank
 use App\Http\Controllers\AdminController;
 
 Route::get('admin', [AdminController::class, 'index'])->name('admin.index')->middleware('auth'); // 管理画面一覧
-Route::get('admin/contacts/{contact}', [AdminController::class, 'show'])->name('admin.show')->middleware('auth'); // 詳細画面
+Route::get('admin/contacts/{contact}', [AdminController::class, 'show'])->name('admin.show')->middleware('auth'); // 
+Route::get('contacts/export', [AdminController::class, 'export'])->middleware('auth');
 
 // タグ関連
 Route::get('admin/tags/{tag}/edit', [AdminController::class, 'edit'])->name('admin.edit')->middleware('auth'); // タグの編集画面
